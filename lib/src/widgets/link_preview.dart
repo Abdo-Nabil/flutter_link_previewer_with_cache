@@ -213,13 +213,13 @@ class _LinkPreviewState extends State<LinkPreview>
         children: [
           Padding(
             padding: withPadding
-                ? EdgeInsets.zero
-                : EdgeInsets.only(
+                ? EdgeInsets.only(
                     left: padding.left,
                     right: padding.right,
                     top: padding.top,
                     bottom: _hasOnlyImage() ? 0 : 16,
-                  ),
+                  )
+                : EdgeInsets.zero,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
