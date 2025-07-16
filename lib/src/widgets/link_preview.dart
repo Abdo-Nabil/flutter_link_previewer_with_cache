@@ -39,6 +39,7 @@ class LinkPreview extends StatefulWidget {
     this.textWidget,
     this.userAgent,
     required this.width,
+    this.placeholderWidget,
   });
 
   /// Expand animation duration.
@@ -119,6 +120,9 @@ class LinkPreview extends StatefulWidget {
 
   /// Width of the [LinkPreview] widget.
   final double width;
+
+  /// Placeholder widget while loading the link preview.
+  final Widget? placeholderWidget;
 
   @override
   State<LinkPreview> createState() => _LinkPreviewState();
@@ -213,13 +217,13 @@ class _LinkPreviewState extends State<LinkPreview>
         children: [
           Padding(
             padding: withPadding
-                ? EdgeInsets.only(
+                ? EdgeInsets.zero
+                : EdgeInsets.only(
                     left: padding.left,
                     right: padding.right,
                     top: padding.top,
                     bottom: _hasOnlyImage() ? 0 : 16,
-                  )
-                : EdgeInsets.zero,
+                  ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -463,7 +467,7 @@ class _LinkPreviewState extends State<LinkPreview>
         withPadding: aspectRatio == 1,
       );
     } else {
-      return _containerWidget(animate: false);
+      return widget.placeholderWidget ?? _containerWidget(animate: false);
     }
   }
 }
