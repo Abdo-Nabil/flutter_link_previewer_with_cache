@@ -268,30 +268,44 @@ Future<PreviewData> getPreviewData(
       );
     }
 
-    previewData = PreviewData(
-      description: previewDataDescription,
-      image: previewDataImage,
-      link: previewDataUrl,
-      title: previewDataTitle,
+    return _cacheIfEnabledAndReturnPreviewData(
+      enableCaching,
+      text,
+      cachingDuration,
+      PreviewData(
+        description: previewDataDescription,
+        image: previewDataImage,
+        link: previewDataUrl,
+        title: previewDataTitle,
+      ),
     );
-
-    /// Cache the result :
-    if (enableCaching) {
-      CacheHelper.cacheLink(
-        key: text,
-        value: previewData.toJson(),
-        cachingDuration: cachingDuration,
-      );
-    }
-    return previewData;
   } catch (e) {
-    return PreviewData(
-      description: previewDataDescription,
-      image: previewDataImage,
-      link: previewDataUrl,
-      title: previewDataTitle,
+    return _cacheIfEnabledAndReturnPreviewData(
+      enableCaching,
+      text,
+      cachingDuration,
+      PreviewData(
+        description: previewDataDescription,
+        image: previewDataImage,
+        link: previewDataUrl,
+        title: previewDataTitle,
+      ),
     );
   }
+}
+
+PreviewData _cacheIfEnabledAndReturnPreviewData(bool enableCaching, String key,
+    Duration cachingDuration, PreviewData previewData) {
+  /// Cache the result :
+  if (enableCaching) {
+    CacheHelper.cacheLink(
+      key: key,
+      value: previewData.toJson(),
+      cachingDuration: cachingDuration,
+    );
+  }
+
+  return previewData;
 }
 
 /// Regex to check if text is email.
